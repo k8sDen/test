@@ -1,0 +1,76 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15.1-alpine
+    container_name: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=superuser
+      - POSTGRES_PASSWORD=supersecret
+      - POSTGRES_DB=app
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    networks:
+      - app
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management-alpine
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq/
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app
+
+  redis:
+    image: redis:7.0.1-alpine
+    container_name: redis
+    command: redis-server --requirepass SuperPassword
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+    networks:
+      - app
+
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: api
+    command:
+      - /code/docker-entrypoint.sh
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./app/.env
+    depends_on:
+      - db
+      - rabbitmq
+      - redis
+    networks:
+      - app
+
+  nginx:
+    image: nginx:1.25.4-alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./static:/usr/share/nginx/html/static
+    depends_on:
+      - api
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
+volumes:
+  postgresql:
+  rabbitmq:
+  redis:

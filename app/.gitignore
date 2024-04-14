@@ -1,0 +1,14 @@
+.idea/
+env/
+venv/
+.env
+media/
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+
+.DS_Store
+celerybeat-schedule.db
