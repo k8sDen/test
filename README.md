@@ -1,20 +1,22 @@
 ### Серверное ПО
 
-| A          |      B |
-|------------|-------:|
-| Django     |  5.0.4 |
-| Python     | 3.11.4 |
-| Rabbitmq   |      3 |
-| Redis      |  7.0.1 |
-| PostgreSQL |   15.1 |
-| Nginx      | 1.25.4 |
+| A          |       B |
+|------------|--------:|
+| Django     |   5.0.4 |
+| Python     |  3.11.4 |
+| Rabbitmq   |       3 |
+| Redis      |   7.0.1 |
+| PostgreSQL |    15.1 |
+| Nginx      |  1.25.4 |
+| Node.js    | 18.13.0 |
+| Vue.js     |       3 |
 
 # Как развернуть проект локально?
 
 #### 1. Клонируем проект
 
 ```code
-git clone git@github.com:k8sDen/api.git
+git clone git@github.com:k8sDen/test.git
 ```
 
 #### 2. Копируем env.example и создаем .env
@@ -39,7 +41,9 @@ docker-compose up -d
 ```
 
 #### 2. Создаем [Report](http://127.0.0.1/admin/analytic/report/add/) в разделе [Reports](http://127.0.0.1/admin/analytic/report/)
+
 Поле `Code` должно быть точно таким же, как `название листа`. Например, если ваш шаблон состоит из 4 листов, создаем 4 `отчета` с соответствующими `кодами`.
 
 #### 3. Файлы импортируется из frontend проекта.
+
 Так как у предоставленного файла формат `XLS`, в проекте используется движок `xlrd`. Если у вас файл `XLSX`, нужно будет поменять движок на `openpyxl`.

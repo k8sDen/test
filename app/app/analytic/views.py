@@ -18,12 +18,12 @@ class ExcelUploadView(APIView):
     columns = [
         'n', 'bank', 'actives', 'loan_portfolio_total',
         'loan_portfolio_including_reverse_repo_operations',
-        'from_it_loans_with _late_payments_over_7_days_sum',
-        'from_it_loans_with _late_payments_over_7_days_share_in_the_loan_portfolio',
-        'from_it_loans_with _late_payments_over_30_days_sum',
-        'from_it_loans_with _late_payments_over_30_days_share_in_the_loan_portfolio',
-        'from_it_loans_with _late_payments_over_90_days_sum',
-        'from_it_loans_with _late_payments_over_90_days_share_in_the_loan_portfolio',
+        'from_it_loans_with_late_payments_over_7_days_sum',
+        'from_it_loans_with_late_payments_over_7_days_share_in_the_loan_portfolio',
+        'from_it_loans_with_late_payments_over_30_days_sum',
+        'from_it_loans_with_late_payments_over_30_days_share_in_the_loan_portfolio',
+        'from_it_loans_with_late_payments_over_90_days_sum',
+        'from_it_loans_with_late_payments_over_90_days_share_in_the_loan_portfolio',
         'amount_of_overdue_loans_including_overdue_remuneration',
         'provisions_formed_for_the_loan_portfolio_in_accordance_with_IFRS_requirements',
         'liabilities', 'of_which_contributions_individuals',
@@ -32,7 +32,7 @@ class ExcelUploadView(APIView):
     ]
 
     def post(self, request, *args, **kwargs):
-        file_path = request.FILES.get('file')
+        file_path = request.FILES.get('files')
         if not file_path:
             return Response({'detail': 'Пожалуйста, загрузите файл.'}, status=status.HTTP_400_BAD_REQUEST)
         try:
