@@ -2,24 +2,25 @@
 import {useReport} from '@/composables/useReport'
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Button from 'primevue/button';
 import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import {onMounted} from 'vue'
 
-const {isLoading, filters, first, totalRecords, records, initFilters, onFilter, onPage, loadLazyData} = useReport()
+const {isLoading, filters, first, totalRecords, records, initFilters, onFilter, onPage, loadLazyData, onSort} = useReport()
 
 initFilters();
 
 onMounted(() => {
   loadLazyData()
 })
-
 </script>
 
 <template>
   <div class="card">
+    <Button label="Назад" link @click="$router.back()"/>
     <DataTable
         ref="dt"
         v-model:filters="filters"
@@ -30,6 +31,7 @@ onMounted(() => {
         dataKey="report_bank_id"
         @filter="onFilter"
         @page="onPage"
+        @sort="onSort"
         lazy
         paginator
         :first="first"
@@ -38,13 +40,13 @@ onMounted(() => {
     >
       <ColumnGroup type="header">
         <Row>
-          <Column field="id" header="№" :rowspan="3"/>
-          <Column field="title" header="Наименование банка" :rowspan="3">
+          <Column field="id" header="№" :rowspan="3" sortable/>
+          <Column field="title" header="Наименование банка" :rowspan="3" sortable>
             <template #filter="{ filterModel }">
               <InputText v-model="filterModel.value" type="text" class="p-column-filter"/>
             </template>
           </Column>
-          <Column header="Активы" :rowspan="3" filter-field="actives" dataType="numeric">
+          <Column header="Активы" :rowspan="3" filter-field="actives">
             <template #filter="{ filterModel }">
               <InputNumber v-model="filterModel.value"/>
             </template>

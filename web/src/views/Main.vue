@@ -6,11 +6,13 @@ import Divider from 'primevue/divider'
 import ProgressSpinner from 'primevue/progressspinner'
 import Message from 'primevue/message'
 import {useReports} from '@/composables/useReports'
+import {usePosts} from "@/composables/usePosts.ts";
 
 const {fetchReports, reports, isLoadingReport, onUpload, message, error} = useReports()
-
+const {posts, fetchPosts, isLoadingPosts} = usePosts()
 onMounted(() => {
   fetchReports()
+  fetchPosts()
 })
 </script>
 <template>
@@ -38,6 +40,18 @@ onMounted(() => {
         <ul v-if="reports.length > 0">
           <li v-for="(report,index) in reports" :key="index">
             <RouterLink :to="`/report/${report.id}`">{{ report.id }}. {{ report.title }}</RouterLink>
+          </li>
+        </ul>
+        <div v-else>Пусто</div>
+      </div>
+    </Panel>
+
+    <Panel header="Новости afk.kz">
+      <ProgressSpinner v-if="isLoadingPosts"/>
+      <div v-else>
+        <ul v-if="posts.length > 0">
+          <li v-for="(post,index) in posts" :key="index">
+            <a :href="post.link" target='_blank'>{{ post.title }}</a>
           </li>
         </ul>
         <div v-else>Пусто</div>

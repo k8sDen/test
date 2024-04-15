@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'django_filters',
-    'analytic'
+    'analytic',
+    'parser',
 ]
 
 MIDDLEWARE = [
@@ -142,7 +143,7 @@ REST_FRAMEWORK = {
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-RABBITMQ_URL = env('RABBITMQ_URL')
+BROKER_URL = env('BROKER_URL')
 CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND')
 LOGGING = {
     'version': 1,

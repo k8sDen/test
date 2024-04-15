@@ -57,6 +57,11 @@ export const useReport = () => {
         lazyParams = event;
         await loadLazyData()
     }
+    const onSort = async (event: any) => {
+        lazyParams = event;
+        await loadLazyData();
+
+    }
     return {
         filters,
         isLoading,
@@ -68,5 +73,6 @@ export const useReport = () => {
         loadLazyData,
         onFilter,
         onPage,
+        onSort,
     }
 }

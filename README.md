@@ -1,3 +1,14 @@
+### Структура проекта
+
+    .
+    ├── app                     # Бэкенд django 5
+    ├── static                  # Статика
+    ├── web                     # Фронтенд vue 3
+    ├── docker-compose.yml      # Файл docker-compose
+    ├── dump.sql                # Дамп базы данных PostgreSQL
+    ├── nginx.conf              # Конфигурация nginx
+    └── README.md
+
 ### Серверное ПО
 
 | A          |       B |
@@ -22,14 +33,17 @@ git clone git@github.com:k8sDen/test.git
 #### 2. Копируем env.example и создаем .env
 
 ```code
-cp .env.example .env
+cp app/.env.example app/.env
 ```
 
 #### 3. Выполняем следующую команду
 
 ```code
+docker-compose build
 docker-compose up -d
 ```
+
+#### Сайт доступен по адресу `http://127.0.0.1`
 
 #### Админ панель
 
