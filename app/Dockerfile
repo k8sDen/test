@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 python:3.11.4-slim-buster
+FROM --platform=linux/amd64 python:3.10-slim-buster
 WORKDIR /code
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1

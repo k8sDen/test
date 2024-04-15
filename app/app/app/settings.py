@@ -15,7 +15,7 @@ import environ
 
 env = environ.Env(
     DEBUG=(bool, False),
-    RABBITMQ_URL=(str, "amqp://guest:guest@localhost:5672/")
+    CELERY_BROKER_URL=(str, "amqp://guest:guest@localhost:5672/")
 )
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -143,7 +143,7 @@ REST_FRAMEWORK = {
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-BROKER_URL = env('BROKER_URL')
+CELERY_BROKER_URL = env('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND')
 LOGGING = {
     'version': 1,

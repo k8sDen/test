@@ -4,10 +4,8 @@ from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
-from django.http import JsonResponse
 
 from parser.models import Post
-from rest_framework.decorators import api_view
 
 from app.celery import app
 

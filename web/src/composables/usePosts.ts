@@ -1,9 +1,10 @@
 import api from '@/helpers/api'
 import {ref} from 'vue'
+import type {Post} from "@/types.ts";
 
 export const usePosts = () => {
     const error = ref()
-    const posts = ref([])
+    const posts = ref<Post[]>([])
     const isLoadingPosts = ref(false)
     const fetchPosts = async () => {
         try {
