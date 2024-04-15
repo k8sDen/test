@@ -1,28 +1,47 @@
 <script setup lang="ts">
-import FileUpload from "primevue/fileupload"
-import Panel from "primevue/panel"
-import Divider from "primevue/divider"
-import Message from 'primevue/message';
+import {onMounted, computed} from 'vue'
+import FileUpload from 'primevue/fileupload'
+import Panel from 'primevue/panel'
+import Divider from 'primevue/divider'
+import ProgressSpinner from 'primevue/progressspinner'
+import Message from 'primevue/message'
+import {useReports} from '@/composables/useReports'
 
-const onUpload = () => {
-  console.log(12)
-}
+const {fetchReports, reports, isLoadingReport, onUpload, message, error} = useReports()
+
+onMounted(() => {
+  fetchReports()
+})
 </script>
 <template>
   <div>
-    <Message severity="success">Файл успешно загружен</Message>
-    <Message severity="error">Ошибка при импорте</Message>
+    <Message severity="success" v-if="message">{{ message }}</Message>
+    <Message severity="error" v-if="error">{{ error }}</Message>
+    <Divider/>
     <Panel header="Загрузка файла">
       <p class="m-0">
         Выберите файл для загрузки.
       </p>
-      <FileUpload mode="basic" type="file" name="files[]" url="http://127.0.0.1/api/analytic/upload/" accept="application/vnd.ms-excel" :maxFileSize="1000000" @upload="onUpload" :auto="true"/>
+      <FileUpload
+          mode="basic"
+          name="files[]"
+          :auto="true"
+          :customUpload="true"
+          accept="application/vnd.ms-excel"
+          @uploader="onUpload"
+      />
     </Panel>
     <Divider/>
     <Panel header="Список отчетов">
-      <li>
-        <RouterLink to="/report/1">Report 1</RouterLink>
-      </li>
+      <ProgressSpinner v-if="isLoadingReport"/>
+      <div v-else>
+        <ul v-if="reports.length > 0">
+          <li v-for="(report,index) in reports" :key="index">
+            <RouterLink :to="`/report/${report.id}`">{{ report.id }}. {{ report.title }}</RouterLink>
+          </li>
+        </ul>
+        <div v-else>Пусто</div>
+      </div>
     </Panel>
 
   </div>

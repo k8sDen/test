@@ -3,7 +3,6 @@ import logging
 import pandas as pd
 
 from analytic.models import Report, Bank, IndicatorValue
-from django.shortcuts import get_object_or_404
 
 logger = logging.getLogger('app')
 
@@ -25,11 +24,21 @@ class ExcelProcessor:
     def process_excel_file(self, xls):
         indicator_values = []
         for sheet_name in xls.sheet_names:
-            report = get_object_or_404(Report, code=sheet_name)
-            if not report:
-                raise
-            df = pd.read_excel(xls, sheet_name=sheet_name, engine='xlrd', skiprows=6, header=0, usecols=[x for x in range(0, len(self.columns))])
+            report = Report.objects.create(title=sheet_name)
+            df = pd.read_excel(
+                xls,
+                sheet_name=sheet_name,
+                engine='xlrd',
+                skiprows=6,
+                header=0,
+                usecols=[x for x in range(0, len(self.columns))],
+            )
+            # вставляем новые хэдеры
             df.columns = self.columns
+            # преобразовываем на %
+            df['late_payments_7_portfolio'] *= 100
+            df['late_payments_30_portfolio'] *= 100
+            df['late_payments_90_portfolio'] *= 100
             self.process_dataframe(df, report, self.indicators, indicator_values)
         return indicator_values
 
@@ -47,14 +56,16 @@ class ExcelProcessor:
             if pd.isna(row['n']):
                 break
             bank, _ = Bank.objects.get_or_create(title=row['bank'])
+            report.banks.add(bank)
             for indicator in indicators:
                 if pd.isna(row.get(indicator['code'], None)):
                     continue
+                value = row[indicator['code']]
                 indicator_values.append(
                     IndicatorValue(
                         report_id=report.id,
                         bank_id=bank.id,
                         indicator_id=indicator['id'],
-                        value=row[indicator['code']]
+                        value=value
                     )
                 )

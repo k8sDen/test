@@ -1,26 +1,24 @@
 from django.db import models
 
 
-class Report(models.Model):
-    title = models.CharField(max_length=255)
-    date = models.DateField()
-    code = models.CharField(unique=True, max_length=255)
-    unit = models.CharField(max_length=255, default="тыс.тенге")
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = "analytic_reports"
-
-    def __str__(self):
-        return self.title
-
-
 class Bank(models.Model):
     title = models.CharField(max_length=255, unique=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "analytic_banks"
+
+    def __str__(self):
+        return self.title
+
+
+class Report(models.Model):
+    title = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    banks = models.ManyToManyField(to=Bank, db_table="analytic_report_banks")
+
+    class Meta:
+        db_table = "analytic_reports"
 
     def __str__(self):
         return self.title
@@ -57,3 +55,30 @@ class IndicatorValue(models.Model):
 
     def __str__(self):
         return f"%s" % self.value
+
+
+class IndicatorValueView(models.Model):
+    id = models.IntegerField(primary_key=True)
+    report_bank_id = models.IntegerField()
+    title = models.CharField(max_length=255)
+    report_id = models.IntegerField()
+    actives = models.IntegerField()
+    loan_portfolio_total = models.IntegerField()
+    reverse_repo_operations = models.IntegerField()
+    late_payments_7_sum = models.IntegerField()
+    late_payments_7_portfolio = models.FloatField()
+    late_payments_30_sum = models.IntegerField()
+    late_payments_30_portfolio = models.FloatField()
+    late_payments_90_sum = models.IntegerField()
+    late_payments_90_portfolio = models.FloatField()
+    amount_remuneration = models.IntegerField()
+    provision_requirements = models.IntegerField()
+    liabilities = models.IntegerField()
+    contributions_individuals = models.IntegerField()
+    contributions_legal_entities = models.IntegerField()
+    equity_on_balance_sheet = models.IntegerField()
+    excess_of_income_tax = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'analytic_indicator_value_view'
