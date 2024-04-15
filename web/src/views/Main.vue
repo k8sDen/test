@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, computed} from 'vue'
+import {onMounted} from 'vue'
 import FileUpload from 'primevue/fileupload'
 import Panel from 'primevue/panel'
 import Divider from 'primevue/divider'
